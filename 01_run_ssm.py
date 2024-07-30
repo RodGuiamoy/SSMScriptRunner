@@ -36,8 +36,9 @@ session = boto3.Session(region_name=region)
 ssm = session.client("ssm")
 s3 = session.client("s3")
 
-# Append the command to the existing script
-# powershell_script = "Get-Service"
+# Load the PowerShell script from a file
+with open("script.ps1", "r") as file:
+    powershell_script = file.read()
 
 # Send the command
 response = ssm.send_command(

@@ -22,7 +22,7 @@ def wait_for_command_to_complete(instance_id, command_id):
 
 region = sys.argv[1]
 instance_ids = sys.argv[2]
-# instance_ids = instance_ids.split(',')
+instance_ids = instance_ids.split(',')
 
 # Initialize a Boto3 session
 session = boto3.Session(region_name=region)

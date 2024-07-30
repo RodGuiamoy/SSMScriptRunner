@@ -26,8 +26,8 @@ region = sys.argv[1]
 instance_ids = sys.argv[2]
 instance_ids = instance_ids.split(',')
 
-# powershell_script = sys.argv[3]
-powershell_script = os.environ.get('POWERSHELL_SCRIPT', '')
+powershell_script = sys.argv[3]
+# powershell_script = os.environ.get('POWERSHELL_SCRIPT', '')
 
 # Initialize a Boto3 session
 session = boto3.Session(region_name=region)

@@ -31,7 +31,9 @@ ssm = session.client("ssm")
 invocation_response = wait_for_command_to_complete(instance_id, command_id)
 
 output = invocation_response['StandardOutputContent'].splitlines()
-print(output)
+for line in output:
+    print(line)
 
 error = invocation_response['StandardErrorContent'].splitlines()
-print(error)
+for line in error:
+    print(line)

@@ -36,7 +36,7 @@ powershell_script = "Get-Service"
 
 # Send the command
 response = ssm.send_command(
-    InstanceIds=[instance_ids],
+    InstanceIds=instance_ids,
     DocumentName="AWS-RunPowerShellScript",
     Parameters={"commands": [powershell_script], "executionTimeout": ["3600"]},
     TimeoutSeconds=300 #,

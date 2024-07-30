@@ -21,8 +21,11 @@ def wait_for_command_to_complete(instance_id, command_id):
             return invocation_response
 
 region = sys.argv[1]
+
 instance_ids = sys.argv[2]
 instance_ids = instance_ids.split(',')
+
+powershell_script = sys.argv[3]
 
 # Initialize a Boto3 session
 session = boto3.Session(region_name=region)
@@ -32,7 +35,7 @@ ssm = session.client("ssm")
 s3 = session.client("s3")
 
 # Append the command to the existing script
-powershell_script = "Get-Service"
+# powershell_script = "Get-Service"
 
 # Send the command
 response = ssm.send_command(

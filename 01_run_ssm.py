@@ -41,7 +41,7 @@ with open("script.ps1", "r") as file:
 response = ssm.send_command(
     InstanceIds=instance_ids,
     DocumentName="AWS-RunPowerShellScript",
-    Parameters={"commands": [powershell_script], "executionTimeout": ["3600"]},
+    Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
     TimeoutSeconds=300 #,
     #OutputS3BucketName=target_bucket,
 )

@@ -16,9 +16,16 @@ def get_instance_id(instance_name, region):
             tags = instance.get('Tags', [])
             for tag in tags:
                 if tag['Key'] == 'Name' and tag['Value'].lower() == instance_name.lower():
-                    return instance['InstanceId']
+                    # Check if the instance is running and passed all 3 status checks
+                    if instance['State']['Name'] == 'running':
+                        # Check instance status checks
+                        instance_status = ec2_client.describe_instance_status(InstanceIds=[instance['InstanceId']])
+                        if instance_status['InstanceStatuses']:
+                            status = instance_status['InstanceStatuses'][0]
+                            if status['SystemStatus']['Status'] == 'ok' and status['InstanceStatus']['Status'] == 'ok':
+                                return instance['InstanceId']
     
-    # If no instance is found, return None
+    # If no instance is found or it's not running with 3/3 checks, return None
     return None
 
 instance_name = sys.argv[1]

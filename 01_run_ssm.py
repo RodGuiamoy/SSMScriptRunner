@@ -40,16 +40,16 @@ with open("script.ps1", "r") as file:
 # Replace placeholders in the PowerShell script
 powershell_script = replace_arguments(powershell_script, arguments)
 
-print (powershell_script)
+# print (powershell_script)
 
-# # Send the modified script as an SSM command
-# response = ssm.send_command(
-#     InstanceIds=instance_ids,
-#     DocumentName="AWS-RunPowerShellScript",
-#     Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
-#     TimeoutSeconds=300,
-# )
+# Send the modified script as an SSM command
+response = ssm.send_command(
+    InstanceIds=instance_ids,
+    DocumentName="AWS-RunPowerShellScript",
+    Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
+    TimeoutSeconds=300,
+)
 
-# # Extract and print the command ID
-# command_id = response["Command"]["CommandId"]
-# print(command_id)
+# Extract and print the command ID
+command_id = response["Command"]["CommandId"]
+print(command_id)

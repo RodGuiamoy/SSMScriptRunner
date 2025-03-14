@@ -25,8 +25,8 @@ def replace_arguments(ps_script, arguments):
 
 # Get region and instance IDs from command-line arguments
 region = sys.argv[1]
-instance_ids = sys.argv[2].split(',')
-arguments = [arg.strip() for arg in sys.argv[3:]]  # Support dynamic number of arguments
+instance_ids = sys.argv[2]
+arguments = [arg.strip() for arg in sys.argv[3].split(',')]
 
 # Initialize AWS Boto3 session
 session = boto3.Session(region_name=region)

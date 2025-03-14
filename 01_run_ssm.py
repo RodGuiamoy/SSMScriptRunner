@@ -18,15 +18,14 @@ def wait_for_command_to_complete(instance_id, command_id):
 
 # Function to replace placeholders in the PowerShell script with given arguments
 def replace_arguments(ps_script, arguments):
-    arg_map = {f"#arg{i+1}#": arg for i, arg in enumerate(arguments)}  # Create a mapping of placeholders to values
-    for placeholder, value in arg_map.items():
-        ps_script = ps_script.replace(placeholder, value)  # Replace placeholders in the script
+    for i, arg in enumerate(arguments):
+        ps_script = ps_script.replace(f"#arg{i+1}#", arg)  # Replace all occurrences dynamically
     return ps_script
 
 # Get region and instance IDs from command-line arguments
 region = sys.argv[1]
 instance_ids = sys.argv[2].split(',')
-arguments = [arg.strip() for arg in sys.argv[3].split(',')]  # Parse and clean up arguments
+arguments = [arg.strip() for arg in sys.argv[3:]]  # Support dynamic number of arguments
 
 # Initialize AWS Boto3 session
 session = boto3.Session(region_name=region)
@@ -40,16 +39,14 @@ with open("script.ps1", "r") as file:
 # Replace placeholders in the PowerShell script
 powershell_script = replace_arguments(powershell_script, arguments)
 
-print(powershell_script)
+# Send the modified script as an SSM command
+response = ssm.send_command(
+    InstanceIds=instance_ids,
+    DocumentName="AWS-RunPowerShellScript",
+    Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
+    TimeoutSeconds=300,
+)
 
-# # Send the modified script as an SSM command
-# response = ssm.send_command(
-#     InstanceIds=instance_ids,
-#     DocumentName="AWS-RunPowerShellScript",
-#     Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
-#     TimeoutSeconds=300,
-# )
-
-# # Extract and print the command ID
-# command_id = response["Command"]["CommandId"]
-# print(command_id)
+# Extract and print the command ID
+command_id = response["Command"]["CommandId"]
+print(command_id)

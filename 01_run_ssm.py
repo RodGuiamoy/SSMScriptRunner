@@ -25,7 +25,7 @@ def replace_arguments(ps_script, arguments):
 
 # Get region and instance IDs from command-line arguments
 region = sys.argv[1]
-instance_ids = sys.argv[2]
+instance_id = sys.argv[2]
 arguments = [arg.strip() for arg in sys.argv[3].split(',')]
 
 # Initialize AWS Boto3 session
@@ -44,7 +44,7 @@ powershell_script = replace_arguments(powershell_script, arguments)
 
 # Send the modified script as an SSM command
 response = ssm.send_command(
-    InstanceIds=instance_ids,
+    InstanceIds=[instance_id],
     DocumentName="AWS-RunPowerShellScript",
     Parameters={"commands": [powershell_script], "executionTimeout": ["300"]},
     TimeoutSeconds=300,

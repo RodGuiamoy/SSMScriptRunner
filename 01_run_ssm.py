@@ -20,6 +20,7 @@ def wait_for_command_to_complete(instance_id, command_id):
 def replace_arguments(ps_script, arguments):
     for i, arg in enumerate(arguments):
         ps_script = ps_script.replace(f"#arg{i+1}#", arg)  # Replace all occurrences dynamically
+    print(ps_script)
     return ps_script
 
 # Get region and instance IDs from command-line arguments
